@@ -1,4 +1,5 @@
 export const urls = {
-    data: 'https://donnees.roulez-eco.fr/opendata/jour',
+    data_day: 'opendata/jour',
+    data_now: 'opendata/instantane',
     apiUrl: 'api'
 };

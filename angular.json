@@ -15,14 +15,11 @@
             },
             "root": "",
             "sourceRoot": "src",
-            "prefix": "app",
+            "prefix": "",
             "architect": {
                 "build": {
-                    "builder": "@angular-builders/custom-webpack:browser",
+                    "builder": "@angular-devkit/build-angular:browser",
                     "options": {
-                        "customWebpackConfig": {
-                            "path": "./extra-webpack.config.js"
-                        },
                         "outputPath": "dist/FuelPrice",
                         "index": "src/index.html",
                         "main": "src/main.ts",
@@ -36,7 +33,10 @@
                         "styles": [
                             "src/styles.scss"
                         ],
-                        "scripts": []
+                        "scripts": [],
+                        "allowedCommonJsDependencies": [
+                            "decompress-response"
+                        ]
                     },
                     "configurations": {
                         "production": {
@@ -69,11 +69,8 @@
                     }
                 },
                 "serve": {
-                    "builder": "@angular-builders/dev-server:generic",
+                    "builder": "@angular-devkit/build-angular:dev-server",
                     "options": {
-                        "customWebpackConfig": {
-                            "path": "./extra-webpack.config.js"
-                        },
                         "browserTarget": "FuelPrice:build",
                         "proxyConfig": "src/proxy.conf.json"
                     },

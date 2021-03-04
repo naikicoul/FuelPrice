@@ -19,7 +19,16 @@
         "lib": [
             "es2018",
             "dom"
-        ]
+        ],
+        "noImplicitAny": false,
+        "paths": {
+            "timers": [
+                "node_modules/timers-browserify"
+            ],
+            "stream": [
+                "node_modules/stream-browserify"
+            ],
+        }
     },
     "angularCompilerOptions": {
         "enableI18nLegacyMessageIdFormat": false,

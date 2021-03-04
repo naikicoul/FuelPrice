@@ -1,0 +1,24 @@
+<ng-container *ngIf="vm$ | async as vm">
+    <div *ngIf="vm.dataRetrieved">
+        <table>
+            <thead>
+                <tr>
+                    <th>Nom</th>
+                    <th>Ville</th>
+                    <th>Adresse</th>
+                    <th>Prix (E10)</th>
+                    <th>MAJ</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let station of stations">
+                    <td>{{ station.nom }}</td>
+                    <td>{{ station.ville }}</td>
+                    <td>{{ station.adresse }}</td>
+                    <td>{{ station.prix }}</td>
+                    <td>{{ station.maj | date:'HH:mm:ss dd/MM/YYYY' }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</ng-container>
