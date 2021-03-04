@@ -1,0 +1,11 @@
+{
+    "/api": {
+        "target": "https://donnees.roulez-eco.fr",
+        "secure": true,
+        "logLevel": "debug",
+        "pathRewrite": {
+            "^/api": ""
+        },
+        "changeOrigin": true
+    }
+}
