@@ -28,7 +28,8 @@
             "stream": [
                 "node_modules/stream-browserify"
             ],
-        }
+        },
+        "strictNullChecks": false
     },
     "angularCompilerOptions": {
         "enableI18nLegacyMessageIdFormat": false,

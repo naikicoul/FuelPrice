@@ -5,7 +5,6 @@ import { map } from 'rxjs/operators';
 
 import { DisplayManagementService } from 'src/app/shared/services/display-management.service';
 import { StoreService } from 'src/app/shared/services/store.service';
-import { UtilsService } from 'src/app/shared/services/utils.service';
 import { pdv } from 'src/app/shared/models/pdv';
 
 @Component({
@@ -23,9 +22,8 @@ export class DataAsTableComponent {
         .pipe(
             map(([dataRetrieved]: [boolean]) => {
                 if (dataRetrieved) {
-                    // TODO : maybe do it inside storeService ???
                     this.stations = this.storeService.data;
-                    console.log('this.stations', this.stations);
+                    // console.log('this.stations', this.stations);
                 }
 
                 return { dataRetrieved };
@@ -33,6 +31,6 @@ export class DataAsTableComponent {
         );
 
     constructor(private displayManagementService: DisplayManagementService,
-                public storeService: StoreService) { }
+                private storeService: StoreService) { }
 
 }

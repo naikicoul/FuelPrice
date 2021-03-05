@@ -3,16 +3,14 @@ import { Component } from '@angular/core';
 import { combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { LoadingService } from './shared/services/loading.service';
+import { LoadingService } from '../../services/loading.service';
 
 @Component({
-    selector: 'app-root',
-    templateUrl: './app.component.html',
-    styleUrls: ['./app.component.scss']
+    selector: 'loading',
+    templateUrl: './loading.component.html',
+    styleUrls: ['./loading.component.scss']
 })
-export class AppComponent {
-
-    title = 'FuelPrice';
+export class LoadingComponent {
 
     loadingStatus$ = this.loadingService.loadingStatus$;
 

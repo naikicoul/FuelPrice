@@ -33,7 +33,9 @@ export class UtilsService {
             if (VILLES_ID.findIndex(id => id === pdv.ID[0]) !== -1) {
                 return pdv;
             }
-            return;
+            else {
+                return null;
+            }
         });
         return results;
     }
@@ -42,7 +44,13 @@ export class UtilsService {
         let result: number = 0;
         prices.map(price => {
             if (price.NOM[0] === 'E10') {
-                result = parseInt(price.VALEUR[0])/1000;
+                const tempValue: string = price.VALEUR[0];
+                if (tempValue.includes('.') || tempValue.includes(',')) {
+                    result = parseFloat(tempValue);
+                }
+                else {
+                    result = parseInt(tempValue)/1000;
+                }
             }
         });
         return result;

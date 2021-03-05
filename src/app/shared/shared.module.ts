@@ -3,14 +3,17 @@ import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 
-import { HeaderComponent } from './header/header.component';
+import { HeaderComponent } from './components/header/header.component';
+import { LoadingComponent } from './components/loading/loading.component';
 
 @NgModule({
     declarations: [
-        HeaderComponent
+        HeaderComponent,
+        LoadingComponent
     ],
     exports: [
-        HeaderComponent
+        HeaderComponent,
+        LoadingComponent
     ],
     imports: [
         CommonModule,

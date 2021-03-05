@@ -14,9 +14,9 @@
                 <tr *ngFor="let station of stations">
                     <td>{{ station.nom }}</td>
                     <td>{{ station.ville }}</td>
-                    <td>{{ station.adresse }}</td>
+                    <td>{{ station.adresse | lowercase }}</td>
                     <td>{{ station.prix }}</td>
-                    <td>{{ station.maj | date:'HH:mm:ss dd/MM/YYYY' }}</td>
+                    <td>{{ station.maj | date:'dd/MM/YYYY à HH:mm' }}</td>
                 </tr>
             </tbody>
         </table>

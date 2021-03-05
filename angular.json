@@ -31,11 +31,14 @@
                             "src/assets"
                         ],
                         "styles": [
+                            "node_modules/chartist/dist/chartist.css",
                             "src/styles.scss"
                         ],
                         "scripts": [],
                         "allowedCommonJsDependencies": [
-                            "decompress-response"
+                            "xml2js",
+                            "chartist",
+                            "chartist-plugin-pointlabels"
                         ]
                     },
                     "configurations": {
