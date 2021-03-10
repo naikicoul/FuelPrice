@@ -1,48 +1,49 @@
-import { AfterViewChecked, Component } from '@angular/core';
+import { Component, AfterViewChecked } from '@angular/core';
 
 import { combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { IChartistData, ILineChartOptions } from 'chartist';
 import * as Chartist from 'chartist';
-import * as ctPointLabels from 'chartist-plugin-pointlabels';
+import { format } from 'date-fns';
+import * as legend from 'chartist-plugin-legend';
 
 import { DisplayManagementService } from 'src/app/shared/services/display-management.service';
 import { StoreService } from 'src/app/shared/services/store.service';
 import { pdv } from 'src/app/shared/models/pdv';
 
 @Component({
-    selector: 'day-chart-component',
-    templateUrl: './day-chart-component.component.html',
-    styleUrls: ['./day-chart-component.component.scss']
+    selector: 'year-chart',
+    templateUrl: './year-chart.component.html',
+    styleUrls: ['./year-chart.component.scss']
 })
-export class DayChartComponentComponent implements AfterViewChecked {
+export class YearChartComponent implements AfterViewChecked {
 
     stations: Array<pdv> = [];
     dataRetrieved: boolean = false;
     displayChart: boolean = false;
     isChartDisplayed: boolean = false;
 
-    data: IChartistData = {
-        labels: [],
-        series: []
-    };
+    data: IChartistData = { series: [] };
+    legends: Array<string> = [];
 
     options: ILineChartOptions = {
         axisX: {
-            showLabel: true,
+            type: Chartist.FixedScaleAxis,
+            divisor: ((new Date()).getMonth() + 1) * 4,
+            labelInterpolationFnc: (value) => { return format(value, 'dd/MM') },
+            scaleMinSpace: 20,
             showGrid: true
         },
-        axisY: {
-            showLabel: false
-        },
         height: 300,
-        showLine: false,
+        showLine: true,
+        lineSmooth: true,
+        fullWidth: true,
+        chartPadding: {
+            right: 20
+        },
         plugins: [
-            ctPointLabels({
-                textAnchor: 'middle',
-                labelInterpolationFnc: Chartist.noop
-            })
+            legend()
         ]
     };
 
@@ -58,19 +59,25 @@ export class DayChartComponentComponent implements AfterViewChecked {
                     this.isChartDisplayed = false;
                     this.stations = this.storeService.data;
 
-                    this.data.labels = [];
-                    this.data.series = [];
-
-                    const labels: Array<string> = [];
-                    const series: Array<number> = [];
-
                     this.stations.map((station: pdv) => {
-                        labels.push(station.ville);
-                        series.push(station.prix);
+                        const serie: any = {
+                            name: station.ville,
+                            data: []
+                        };
+
+                        this.legends.push(station.ville);
+
+                        const length: number = (station.prix as Array<number>).length;
+                        for (let i = 0; i < length; i++) {
+                            serie.data.push({
+                                x: new Date(station.maj[i]),
+                                y: station.prix[i]
+                            });
+                        }
+
+                        this.data.series.push(serie);
                     });
 
-                    this.data.labels = [...labels];
-                    this.data.series = [[...series]];
                     this.displayChart = true;
                 }
 

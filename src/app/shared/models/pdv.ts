@@ -5,8 +5,8 @@ export interface pdv {
     longitude: number;
     adresse: string;
     horaires: any;
-    prix: number;
-    maj: string;
+    prix: number | Array<number>;
+    maj: string | Array<string>;
     services: any;
     ville: string;
     nom?: string;

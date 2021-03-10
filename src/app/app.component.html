@@ -1,7 +1,5 @@
 <ng-container *ngIf="vm$ | async as vm">
-    <loading></loading>
-    <ng-container *ngIf="!vm.loading">
-        <header></header>
-        <router-outlet></router-outlet>
-    </ng-container>
+    <loading *ngIf="vm.loading"></loading>
+    <header></header>
+    <router-outlet></router-outlet>
 </ng-container>

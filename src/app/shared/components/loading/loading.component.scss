@@ -1,4 +1,5 @@
 .loader {
+    background-color: rgba(255,255,255,0.7);
     animation: spin 1s infinite linear;
     border: solid 2vmin transparent;
     border-radius: 50%;
@@ -10,7 +11,7 @@
     position: fixed;
     top: calc(50% - 10vmin);
     width: 20vmin;
-    z-index: 1;
+    z-index: 9999;
     &:before {
         animation: spin 2s infinite linear;
         border: solid 2vmin transparent;
@@ -26,13 +27,14 @@
         width: 16vmin;
     }
     &:after {
+        content: "";
+        display: block;
         animation: spin 3s infinite linear;
         border: solid 2vmin transparent;
         border-radius: 50%;
         border-right-color: #6ff;
         border-top-color: #6ff;
         box-sizing: border-box;
-        content: "";
         height: 12vmin;
         left: 2vmin;
         position: absolute;

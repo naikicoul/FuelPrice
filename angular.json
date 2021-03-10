@@ -38,7 +38,8 @@
                         "allowedCommonJsDependencies": [
                             "xml2js",
                             "chartist",
-                            "chartist-plugin-pointlabels"
+                            "chartist-plugin-pointlabels",
+                            "chartist-plugin-legend"
                         ]
                     },
                     "configurations": {

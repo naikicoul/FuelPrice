@@ -16,7 +16,7 @@ import { LoadingService } from './loading.service';
 })
 export class DataService {
 
-    getPricesbyDay(day: string) {
+    getPricesByDay(day: string) {
         this.displayManagementService.onDataRetrieved(false);
         this.loadingService.startLoading();
 
@@ -38,6 +38,26 @@ export class DataService {
         this.getDataToday()
             .subscribe((data: any) => {
                 this.processData(data);
+            },
+            (error) => {
+                console.error(error);
+                this.loadingService.stopLoading();
+                // throw error;
+            });
+    }
+
+    getPricesByYear(year: string) {
+        this.displayManagementService.onDataRetrieved(false);
+        this.loadingService.startLoading();
+
+        this.getDataByYear(year)
+            .subscribe((data: any) => {
+                this.processData(data, true);
+            },
+            (error) => {
+                console.error(error);
+                this.loadingService.stopLoading();
+                // throw error;
             });
     }
 
@@ -50,7 +70,11 @@ export class DataService {
         return this.http.get(`${urls.apiUrl}/${urls.data_now}`, { responseType: 'blob' });
     }
 
-    private processData(data) {
+    private getDataByYear(year: string) {
+        return this.http.get(`${urls.apiUrl}/${urls.data_year}/${year}`, { responseType: 'blob' });
+    }
+
+    private processData(data, isYearFormat: boolean = false) {
         const jsZip = new JSZip();
         jsZip.loadAsync(data).then((zip) => {
             Object.keys(zip.files).forEach((fileName) => {
@@ -66,8 +90,10 @@ export class DataService {
                         const temp = this.utilsService.filterResults(result.pdv_liste.pdv);
 
                         temp.map((pdv_request: pdv_request) => {
-                            this.storeService.data.push(this.utilsService.mapPDV_RequestToPDV(pdv_request));
+                            this.storeService.data.push(this.utilsService.mapPDV_RequestToPDV(pdv_request, isYearFormat));
                         });
+
+                        console.log('this.storeService.data', this.storeService.data);
 
                         this.displayManagementService.onDataRetrieved(true);
                         this.loadingService.stopLoading();

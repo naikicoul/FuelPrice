@@ -11,7 +11,7 @@ import { PDV_ADDONS } from '../assets/pdv_addons';
 })
 export class UtilsService {
 
-    mapPDV_RequestToPDV(pdv_request: pdv_request): pdv {
+    mapPDV_RequestToPDV(pdv_request: pdv_request, isYearFormat: boolean = false): pdv {
         return <pdv>{
             id: !!pdv_request.ID[0] ? pdv_request.ID[0] : '',
             cp: !!pdv_request.CP[0] ? pdv_request.CP[0] : '',
@@ -21,8 +21,8 @@ export class UtilsService {
             ville: !!pdv_request.ville && !!pdv_request.ville[0] ? this.getTown(pdv_request) : '',
             horaires: pdv_request.horaires,
             services: pdv_request.services,
-            prix: !!pdv_request.prix ? this.getPrice(pdv_request.prix) : 0,
-            maj: !!pdv_request.prix ? this.getMAJ(pdv_request.prix) : 'NA',
+            prix: !!pdv_request.prix ? isYearFormat ? this.getPrices(pdv_request.prix) : this.getPrice(pdv_request.prix) : 0,
+            maj: !!pdv_request.prix ? isYearFormat ? this.getMAJs(pdv_request.prix) : this.getMAJ(pdv_request.prix) : 'NA',
             nom: this.getName(pdv_request)
         };
     }
@@ -56,11 +56,37 @@ export class UtilsService {
         return result;
     }
 
+    private getPrices(prices: Array<any>): Array<number> {
+        let result: Array<number> = [];
+        prices.map(price => {
+            if (price.NOM[0] === 'E10') {
+                const tempValue: string = price.VALEUR[0];
+                if (tempValue.includes('.') || tempValue.includes(',')) {
+                    result.push(parseFloat(tempValue));
+                }
+                else {
+                    result.push(parseInt(tempValue)/1000);
+                }
+            }
+        });
+        return result;
+    }
+
     private getMAJ(prices: Array<any>): string {
         let result: string = '';
         prices.map(price => {
             if (price.NOM[0] === 'E10') {
                 result = price.MAJ[0];
+            }
+        });
+        return result;
+    }
+
+    private getMAJs(prices: Array<any>): Array<string> {
+        let result: Array<string> = [];
+        prices.map(price => {
+            if (price.NOM[0] === 'E10') {
+                result.push(price.MAJ[0]);
             }
         });
         return result;
