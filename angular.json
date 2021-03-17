@@ -18,7 +18,7 @@
             "prefix": "",
             "architect": {
                 "build": {
-                    "builder": "@angular-devkit/build-angular:browser",
+                    "builder": "@angular-builders/custom-webpack:browser",
                     "options": {
                         "outputPath": "dist/FuelPrice",
                         "index": "src/index.html",
@@ -40,7 +40,10 @@
                             "chartist",
                             "chartist-plugin-pointlabels",
                             "chartist-plugin-legend"
-                        ]
+                        ],
+                        "customWebpackConfig": {
+                            "path": "webpack.config.js"
+                        }
                     },
                     "configurations": {
                         "production": {
@@ -73,7 +76,7 @@
                     }
                 },
                 "serve": {
-                    "builder": "@angular-devkit/build-angular:dev-server",
+                    "builder": "@angular-builders/custom-webpack:dev-server",
                     "options": {
                         "browserTarget": "FuelPrice:build",
                         "proxyConfig": "src/proxy.conf.json"

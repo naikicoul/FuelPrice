@@ -36,7 +36,6 @@ export class DayChartComponent implements AfterViewChecked {
         axisY: {
             showLabel: false
         },
-        height: 300,
         showLine: false,
         plugins: [
             ctPointLabels({

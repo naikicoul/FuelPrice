@@ -1,5 +1,8 @@
 <ng-container *ngIf="vm$ | async as vm">
-    <loading *ngIf="vm.loading"></loading>
+    <ngx-spinner bdColor="rgba(51, 51, 51, 0.35)"
+                color="white"
+                type="ball-spin-clockwise"
+                size="large"></ngx-spinner>
     <header></header>
     <router-outlet></router-outlet>
 </ng-container>

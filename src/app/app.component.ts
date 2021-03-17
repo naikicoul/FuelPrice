@@ -3,6 +3,8 @@ import { Component } from '@angular/core';
 import { combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
 
+import { NgxSpinnerService } from 'ngx-spinner';
+
 import { LoadingService } from './shared/services/loading.service';
 
 @Component({
@@ -19,10 +21,18 @@ export class AppComponent {
     vm$ = combineLatest([this.loadingStatus$])
         .pipe(
             map(([loading]: [boolean]) => {
-                return { loading };
+                if (loading) {
+                    this.ngxSpinnerService.show();
+                }
+                else {
+                    this.ngxSpinnerService.hide();
+                }
+
+                return { };
             })
         );
 
-    constructor(private loadingService: LoadingService) { }
+    constructor(private loadingService: LoadingService,
+                private ngxSpinnerService: NgxSpinnerService) { }
 
 }

@@ -4,21 +4,18 @@ import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 
 import { HeaderComponent } from './components/header/header.component';
-import { LoadingComponent } from './components/loading/loading.component';
 
 @NgModule({
     declarations: [
-        HeaderComponent,
-        LoadingComponent
+        HeaderComponent
     ],
     exports: [
-        HeaderComponent,
-        LoadingComponent
+        HeaderComponent
     ],
     imports: [
         CommonModule,
-        HttpClientModule,
-        FormsModule
+        FormsModule,
+        HttpClientModule
     ]
 })
 export class SharedModule { }

@@ -93,8 +93,6 @@ export class DataService {
                             this.storeService.data.push(this.utilsService.mapPDV_RequestToPDV(pdv_request, isYearFormat));
                         });
 
-                        console.log('this.storeService.data', this.storeService.data);
-
                         this.displayManagementService.onDataRetrieved(true);
                         this.loadingService.stopLoading();
                     });
