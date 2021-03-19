@@ -1,8 +1,8 @@
-import { Component, AfterViewChecked } from '@angular/core';
+import { Component, AfterViewChecked, OnInit, OnDestroy } from '@angular/core';
 
-import { combineLatest } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Subscription } from 'rxjs';
 
+import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
 import { IChartistData, ILineChartOptions } from 'chartist';
 import * as Chartist from 'chartist';
 import { format } from 'date-fns';
@@ -11,18 +11,22 @@ import * as legend from 'chartist-plugin-legend';
 import { DisplayManagementService } from 'src/app/shared/services/display-management.service';
 import { StoreService } from 'src/app/shared/services/store.service';
 import { pdv } from 'src/app/shared/models/pdv';
+import { Events } from 'src/app/shared/models/events';
 
+@AutoUnsubscribe()
 @Component({
     selector: 'year-chart',
     templateUrl: './year-chart.component.html',
     styleUrls: ['./year-chart.component.scss']
 })
-export class YearChartComponent implements AfterViewChecked {
+export class YearChartComponent implements AfterViewChecked, OnInit, OnDestroy {
 
     stations: Array<pdv> = [];
-    dataRetrieved: boolean = false;
+    isDataProcessed: boolean = false;
     displayChart: boolean = false;
     isChartDisplayed: boolean = false;
+
+    dataProcessedEventSub: Subscription;
 
     data: IChartistData = { series: [] };
     legends: Array<string> = [];
@@ -43,54 +47,53 @@ export class YearChartComponent implements AfterViewChecked {
             right: 20
         },
         plugins: [
-            legend()
+            legend({position: 'bottom'})
         ]
     };
 
-    dataRetrieved$ = this.displayManagementService.dataRetrieved$;
+    private processChart(isDataProcessed: boolean) {
+        this.isDataProcessed = isDataProcessed;
 
-    vm$ = combineLatest([this.dataRetrieved$])
-        .pipe(
-            map(([dataRetrieved]: [boolean]) => {
-                this.dataRetrieved = dataRetrieved;
+        if (this.isDataProcessed) {
+            this.displayChart = false;
+            this.isChartDisplayed = false;
+            this.stations = this.storeService.data;
 
-                if (dataRetrieved) {
-                    this.displayChart = false;
-                    this.isChartDisplayed = false;
-                    this.stations = this.storeService.data;
+            this.stations.map((station: pdv) => {
+                const serie: any = {
+                    name: station.ville,
+                    data: []
+                };
 
-                    this.stations.map((station: pdv) => {
-                        const serie: any = {
-                            name: station.ville,
-                            data: []
-                        };
+                this.legends.push(station.ville);
 
-                        this.legends.push(station.ville);
-
-                        const length: number = (station.prix as Array<number>).length;
-                        for (let i = 0; i < length; i++) {
-                            serie.data.push({
-                                x: new Date(station.maj[i]),
-                                y: station.prix[i]
-                            });
-                        }
-
-                        this.data.series.push(serie);
+                const length: number = (station.prix as Array<number>).length;
+                for (let i = 0; i < length; i++) {
+                    serie.data.push({
+                        x: new Date(station.maj[i]),
+                        y: station.prix[i]
                     });
-
-                    this.displayChart = true;
                 }
 
-                return { };
-            })
-        );
+                this.data.series.push(serie);
+            });
+
+            this.displayChart = true;
+        }
+    }
+
+    ngOnInit() {
+        this.dataProcessedEventSub = this.displayManagementService.on(Events.DataProcessed, (isDataProcessed: boolean) => { this.processChart(isDataProcessed); });
+    }
 
     ngAfterViewChecked() {
-        if (this.dataRetrieved && this.displayChart && !this.isChartDisplayed) {
+        if (this.isDataProcessed && this.displayChart && !this.isChartDisplayed) {
             new Chartist.Line('.ct-chart', this.data, this.options);
             this.isChartDisplayed = true;
         }
     }
+
+    ngOnDestroy() { }
 
     constructor(private displayManagementService: DisplayManagementService,
                 private storeService: StoreService) { }

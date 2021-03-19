@@ -30,6 +30,7 @@
         "chartist-plugin-pointlabels": "0.0.6",
         "date-fns": "^2.19.0",
         "jszip": "^3.6.0",
+        "ngx-auto-unsubscribe": "^3.0.1",
         "ngx-spinner": "^10.0.1",
         "rxjs": "~6.6.0",
         "stream-browserify": "^3.0.0",

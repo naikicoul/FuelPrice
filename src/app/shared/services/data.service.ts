@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
+import { throwError } from 'rxjs';
+
 import * as JSZip from 'jszip';
 import * as xml2js from 'xml2js';
 
@@ -10,6 +12,8 @@ import { UtilsService } from '../services/utils.service';
 import { StoreService } from '../services/store.service';
 import { DisplayManagementService } from '../services/display-management.service';
 import { LoadingService } from './loading.service';
+import { EmitEvent } from '../models/emit_event';
+import { Events } from '../models/events';
 
 @Injectable({
     providedIn: 'root'
@@ -17,7 +21,9 @@ import { LoadingService } from './loading.service';
 export class DataService {
 
     getPricesByDay(day: string) {
-        this.displayManagementService.onDataRetrieved(false);
+        // this.displayManagementService.onDataRetrieved(false);
+        this.displayManagementService.emit(new EmitEvent(Events.DataProcessed, false));
+
         this.loadingService.startLoading();
 
         this.getDataByDay(day)
@@ -27,12 +33,14 @@ export class DataService {
             (error) => {
                 console.error(error);
                 this.loadingService.stopLoading();
-                // throw error;
+                throwError(error);
             });
     }
 
     getPricesToday() {
-        this.displayManagementService.onDataRetrieved(false);
+        // this.displayManagementService.onDataRetrieved(false);
+        this.displayManagementService.emit(new EmitEvent(Events.DataProcessed, false));
+
         this.loadingService.startLoading();
 
         this.getDataToday()
@@ -42,12 +50,14 @@ export class DataService {
             (error) => {
                 console.error(error);
                 this.loadingService.stopLoading();
-                // throw error;
+                throwError(error);
             });
     }
 
     getPricesByYear(year: string) {
-        this.displayManagementService.onDataRetrieved(false);
+        // this.displayManagementService.onDataRetrieved(false);
+        this.displayManagementService.emit(new EmitEvent(Events.DataProcessed, false));
+
         this.loadingService.startLoading();
 
         this.getDataByYear(year)
@@ -57,7 +67,7 @@ export class DataService {
             (error) => {
                 console.error(error);
                 this.loadingService.stopLoading();
-                // throw error;
+                throwError(error);
             });
     }
 
@@ -93,7 +103,9 @@ export class DataService {
                             this.storeService.data.push(this.utilsService.mapPDV_RequestToPDV(pdv_request, isYearFormat));
                         });
 
-                        this.displayManagementService.onDataRetrieved(true);
+                        // this.displayManagementService.onDataRetrieved(true);
+                        this.displayManagementService.emit(new EmitEvent(Events.DataProcessed, true));
+
                         this.loadingService.stopLoading();
                     });
                 })

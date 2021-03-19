@@ -1,7 +1,32 @@
-<div class="container mx-auto px-4">
-    <button type="button" (click)="getDataByDay()">Get Data</button>
-    <input type="text" [(ngModel)]="day">
-    <button type="button" (click)="getDataToday()">Get Data Today</button>
-    <input type="text" [(ngModel)]="year">
-    <button type="button" (click)="getDataByYear()">Get Data Year</button>
+<div class="m-2 flex flex-col justify-items-center md:flex-row md:justify-around">
+    <div class="flex justify-center">
+        <input type="date" placeholder="day" class="w-40 mx-2 p-2 rounded-md border border-gray-300 focus:border-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-200" [(ngModel)]="day">
+        <button type="button"
+            class="focus:outline-none rounded-lg text-white text-base bg-blue-400 hover:bg-blue-600 p-2"
+            (click)="getDataByDay()">
+            Prices For A Day
+        </button>
+    </div>
+
+    <div class="flex justify-center my-2 md:my-0">
+        <button type="button"
+            class="focus:outline-none rounded-lg text-white text-base bg-blue-400 hover:bg-blue-600 p-2"
+            (click)="getDataToday()">
+            <svg *ngIf="false"
+                class="inline animate-spin h-6 w-6 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+            Prices Today
+        </button>
+    </div>
+
+    <div class="flex justify-center">
+        <input type="text" class="w-16 mx-2 rounded-md border border-gray-300 focus:border-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-200" [(ngModel)]="year">
+        <button type="button"
+            class="focus:outline-none rounded-lg text-white text-base bg-blue-400 hover:bg-blue-600 p-2"
+            (click)="getDataByYear()">
+            Prices For A Year
+        </button>
+    </div>
 </div>

@@ -14,8 +14,11 @@ export class HeaderComponent {
     year: string;
 
     getDataByDay() {
-        this.dataService.getPricesByDay(this.day);
-        this.router.navigate(['oneDay']);
+        if (this.day) {
+            const day = this.day.split('-').join('');
+            this.dataService.getPricesByDay(day);
+            this.router.navigate(['oneDay']);
+        }
     }
 
     getDataToday() {
@@ -30,7 +33,6 @@ export class HeaderComponent {
 
     constructor(private dataService: DataService,
                 private router: Router) {
-        this.day = '20210225';
         this.year = '2021';
     }
 

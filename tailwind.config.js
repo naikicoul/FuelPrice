@@ -1,7 +1,7 @@
 module.exports = {
     prefix: '',
     purge: {
-        enabled: true,
+        enabled: false,
         content: [
             './src/**/*.{html,ts}',
         ]
@@ -11,6 +11,7 @@ module.exports = {
         extend: {},
     },
     variants: {
+        margin: ['responsive'],
         extend: {},
     },
     plugins: [require('@tailwindcss/forms'),require('@tailwindcss/typography')],

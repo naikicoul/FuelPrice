@@ -1,34 +1,39 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 
-import { combineLatest } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Subscription } from 'rxjs';
+
+import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
 
 import { DisplayManagementService } from 'src/app/shared/services/display-management.service';
 import { StoreService } from 'src/app/shared/services/store.service';
 import { pdv } from 'src/app/shared/models/pdv';
+import { Events } from 'src/app/shared/models/events';
 
+@AutoUnsubscribe()
 @Component({
     selector: 'data-as-table',
     templateUrl: './data-as-table.component.html',
     styleUrls: ['./data-as-table.component.scss']
 })
-export class DataAsTableComponent {
+export class DataAsTableComponent implements OnInit, OnDestroy {
 
     stations: Array<pdv> = [];
+    isDataProcessed: boolean = false;
+    dataProcessedEventSub: Subscription;
 
-    dataRetrieved$ = this.displayManagementService.dataRetrieved$;
+    private processLocalData(isDataProcessed: boolean) {
+        this.isDataProcessed = isDataProcessed;
+        if (isDataProcessed) {
+            this.stations = this.storeService.data;
+            // console.log('this.stations', this.stations);
+        }
+    }
 
-    vm$ = combineLatest([this.dataRetrieved$])
-        .pipe(
-            map(([dataRetrieved]: [boolean]) => {
-                if (dataRetrieved) {
-                    this.stations = this.storeService.data;
-                    // console.log('this.stations', this.stations);
-                }
+    ngOnInit() {
+        this.dataProcessedEventSub = this.displayManagementService.on(Events.DataProcessed, (isDataProcessed: boolean) => { this.processLocalData(isDataProcessed); });
+    }
 
-                return { dataRetrieved };
-            })
-        );
+    ngOnDestroy() { }
 
     constructor(private displayManagementService: DisplayManagementService,
                 private storeService: StoreService) { }

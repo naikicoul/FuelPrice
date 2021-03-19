@@ -1,7 +1,3 @@
-<ng-container *ngIf="vm$ | async as vm">
-    <div class="layout" *ngIf="dataRetrieved">
-
-        <div class="ct-chart"></div>
-
-    </div>
-</ng-container>
+<div class="layout" *ngIf="isDataProcessed">
+    <div class="ct-chart"></div>
+</div>

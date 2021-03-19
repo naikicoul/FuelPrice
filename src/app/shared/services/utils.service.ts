@@ -76,7 +76,7 @@ export class UtilsService {
         let result: string = '';
         prices.map(price => {
             if (price.NOM[0] === 'E10') {
-                result = price.MAJ[0];
+                result = this.formatDate(price.MAJ[0]);
             }
         });
         return result;
@@ -128,6 +128,10 @@ export class UtilsService {
             }
         });
         return name;
+    }
+
+    private formatDate(date: string): string {
+        return (new Date(date)).toLocaleString('fr-FR');
     }
 
 }

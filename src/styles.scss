@@ -25,7 +25,7 @@ $ct-series-colors: (
     z-index: 10;
     list-style: none;
     display: flex;
-    align-items: center;
+    // align-items: center;
     justify-content: space-evenly;
 
     li {
@@ -39,6 +39,7 @@ $ct-series-colors: (
         height: 12px;
         position: absolute;
         left: 0;
+        top: 0.25rem;
         content: '';
         border: 3px solid transparent;
         border-radius: 2px;
@@ -60,4 +61,12 @@ $ct-series-colors: (
             border-color: nth($ct-series-colors, $i + 1);
         }
     }
+}
+
+.ct-label {
+    transform: translate(23px, 8px);
+}
+
+.ct-label.ct-horizontal.ct-end, .ct-label.ct-vertical.ct-start {
+    transform: none;
 }
